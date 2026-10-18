@@ -1,0 +1,825 @@
+{
+  "metadata": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD",
+    "python_version": "3.14.2",
+    "numpy_version": "2.5.2",
+    "warmup_reps": 50,
+    "benchmark_reps": 200,
+    "seed": 42,
+    "omp_num_threads": "default",
+    "timestamp": "2026-10-18T18:39:13Z"
+  },
+  "results": [
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 46.4,
+        "p95_us": 48.64499999999999,
+        "mean_us": 47.083999999999996,
+        "std_us": 2.928027322276894,
+        "min_us": 46.0,
+        "max_us": 71.0
+      },
+      "dense_cached": {
+        "median_us": 27.6,
+        "p95_us": 28.0,
+        "mean_us": 27.7665,
+        "std_us": 1.0148042914769329,
+        "min_us": 27.4,
+        "max_us": 38.0
+      },
+      "sparse_coord": {
+        "median_us": 34488.45,
+        "p95_us": 38881.469999999994,
+        "mean_us": 34882.3305,
+        "std_us": 2165.295595760484,
+        "min_us": 31109.6,
+        "max_us": 45929.6
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1589.4499999999998,
+        "p95_us": 2474.209999999998,
+        "mean_us": 1786.8004999999998,
+        "std_us": 398.4283818326074,
+        "min_us": 1462.4,
+        "max_us": 3490.7
+      },
+      "speedup_csc_vs_coord": 21.698354776809587,
+      "speedup_cached_vs_dense": 1.681159420289855,
+      "relative_to_dense_blass": 34.25538793103448,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0837,
+        "sparse_coord": 0.2376,
+        "sparse_csc": 1.4254
+      }
+    },
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 65.1,
+        "p95_us": 142.505,
+        "mean_us": 77.04549999999999,
+        "std_us": 37.37977634697671,
+        "min_us": 64.2,
+        "max_us": 431.1
+      },
+      "dense_cached": {
+        "median_us": 63.0,
+        "p95_us": 114.09499999999983,
+        "mean_us": 67.001,
+        "std_us": 40.21995026103339,
+        "min_us": 44.9,
+        "max_us": 403.1
+      },
+      "sparse_coord": {
+        "median_us": 27316.65,
+        "p95_us": 31226.239999999998,
+        "mean_us": 27760.173499999997,
+        "std_us": 2479.31034367377,
+        "min_us": 24414.3,
+        "max_us": 46284.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1818.1,
+        "p95_us": 2683.09,
+        "mean_us": 1992.0675,
+        "std_us": 347.1229698446215,
+        "min_us": 1689.9,
+        "max_us": 3363.3
+      },
+      "speedup_csc_vs_coord": 15.02483361751279,
+      "speedup_cached_vs_dense": 1.0333333333333332,
+      "relative_to_dense_blass": 27.927803379416282,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0837,
+        "sparse_coord": 0.2376,
+        "sparse_csc": 1.4254
+      }
+    },
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 284.7,
+        "p95_us": 416.5849999999999,
+        "mean_us": 290.25800000000004,
+        "std_us": 84.51735641866705,
+        "min_us": 179.3,
+        "max_us": 870.7
+      },
+      "dense_cached": {
+        "median_us": 237.15,
+        "p95_us": 331.7249999999999,
+        "mean_us": 240.1725,
+        "std_us": 52.95163353240389,
+        "min_us": 164.2,
+        "max_us": 401.2
+      },
+      "sparse_coord": {
+        "median_us": 30013.9,
+        "p95_us": 33978.454999999994,
+        "mean_us": 30215.416,
+        "std_us": 2240.619688087204,
+        "min_us": 26993.6,
+        "max_us": 39286.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 3121.65,
+        "p95_us": 4108.405,
+        "mean_us": 3283.5964999999997,
+        "std_us": 421.45641902544327,
+        "min_us": 3012.0,
+        "max_us": 5545.2
+      },
+      "speedup_csc_vs_coord": 9.61475501737863,
+      "speedup_cached_vs_dense": 1.200506008855155,
+      "relative_to_dense_blass": 10.964699683877766,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0837,
+        "sparse_coord": 0.2376,
+        "sparse_csc": 1.4254
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 46.3,
+        "p95_us": 49.52999999999999,
+        "mean_us": 47.135,
+        "std_us": 3.1448648619614805,
+        "min_us": 45.9,
+        "max_us": 68.4
+      },
+      "dense_cached": {
+        "median_us": 27.2,
+        "p95_us": 28.404999999999998,
+        "mean_us": 27.926500000000004,
+        "std_us": 3.424536136471625,
+        "min_us": 26.8,
+        "max_us": 62.4
+      },
+      "sparse_coord": {
+        "median_us": 15995.5,
+        "p95_us": 21394.575,
+        "mean_us": 17117.961499999998,
+        "std_us": 4710.206347015781,
+        "min_us": 15370.4,
+        "max_us": 76999.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1470.35,
+        "p95_us": 1731.7599999999975,
+        "mean_us": 1520.5165000000002,
+        "std_us": 149.80496012398925,
+        "min_us": 1445.7,
+        "max_us": 2541.3
+      },
+      "speedup_csc_vs_coord": 10.878702349780665,
+      "speedup_cached_vs_dense": 1.7022058823529411,
+      "relative_to_dense_blass": 31.757019438444924,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0453,
+        "sparse_coord": 0.2006,
+        "sparse_csc": 1.5728
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 65.2,
+        "p95_us": 91.94,
+        "mean_us": 70.262,
+        "std_us": 26.792016646755055,
+        "min_us": 64.6,
+        "max_us": 343.7
+      },
+      "dense_cached": {
+        "median_us": 46.3,
+        "p95_us": 47.52999999999999,
+        "mean_us": 47.24099999999999,
+        "std_us": 6.459823449599843,
+        "min_us": 45.8,
+        "max_us": 119.9
+      },
+      "sparse_coord": {
+        "median_us": 12571.7,
+        "p95_us": 14730.539999999999,
+        "mean_us": 12854.955499999998,
+        "std_us": 871.7733345714067,
+        "min_us": 11807.3,
+        "max_us": 16686.3
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1654.15,
+        "p95_us": 2090.0849999999996,
+        "mean_us": 1730.5510000000002,
+        "std_us": 179.40719104595556,
+        "min_us": 1628.4,
+        "max_us": 2722.4
+      },
+      "speedup_csc_vs_coord": 7.600096726415379,
+      "speedup_cached_vs_dense": 1.408207343412527,
+      "relative_to_dense_blass": 25.370398773006134,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0453,
+        "sparse_coord": 0.2006,
+        "sparse_csc": 1.5728
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 248.45,
+        "p95_us": 333.9899999999996,
+        "mean_us": 258.789,
+        "std_us": 48.77116852198643,
+        "min_us": 189.6,
+        "max_us": 469.2
+      },
+      "dense_cached": {
+        "median_us": 219.6,
+        "p95_us": 316.22999999999985,
+        "mean_us": 231.28199999999998,
+        "std_us": 50.846958375108336,
+        "min_us": 162.3,
+        "max_us": 529.4
+      },
+      "sparse_coord": {
+        "median_us": 14337.2,
+        "p95_us": 19050.965,
+        "mean_us": 15148.298999999999,
+        "std_us": 1835.6938682141422,
+        "min_us": 13397.1,
+        "max_us": 22379.1
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 2396.7,
+        "p95_us": 3155.819999999999,
+        "mean_us": 2511.6005,
+        "std_us": 293.8132625491062,
+        "min_us": 2344.4,
+        "max_us": 4004.6
+      },
+      "speedup_csc_vs_coord": 5.982058663996329,
+      "speedup_cached_vs_dense": 1.131375227686703,
+      "relative_to_dense_blass": 9.646608975649023,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0453,
+        "sparse_coord": 0.2006,
+        "sparse_csc": 1.5728
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 46.5,
+        "p95_us": 69.80999999999999,
+        "mean_us": 51.849000000000004,
+        "std_us": 12.739234631640944,
+        "min_us": 46.0,
+        "max_us": 161.8
+      },
+      "dense_cached": {
+        "median_us": 27.2,
+        "p95_us": 38.4,
+        "mean_us": 29.218000000000004,
+        "std_us": 8.63291237068928,
+        "min_us": 26.9,
+        "max_us": 106.4
+      },
+      "sparse_coord": {
+        "median_us": 7959.25,
+        "p95_us": 9173.675,
+        "mean_us": 8153.769499999999,
+        "std_us": 468.6477783151756,
+        "min_us": 7715.1,
+        "max_us": 10341.3
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1457.75,
+        "p95_us": 1956.4399999999994,
+        "mean_us": 1541.4520000000002,
+        "std_us": 195.51072322509577,
+        "min_us": 1432.1,
+        "max_us": 2725.4
+      },
+      "speedup_csc_vs_coord": 5.459955410735723,
+      "speedup_cached_vs_dense": 1.709558823529412,
+      "relative_to_dense_blass": 31.349462365591396,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0441,
+        "sparse_coord": 0.1549,
+        "sparse_csc": 1.2527
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 65.9,
+        "p95_us": 90.515,
+        "mean_us": 70.0015,
+        "std_us": 10.92981462560093,
+        "min_us": 64.9,
+        "max_us": 135.5
+      },
+      "dense_cached": {
+        "median_us": 46.2,
+        "p95_us": 53.82499999999989,
+        "mean_us": 48.2685,
+        "std_us": 13.119533442542838,
+        "min_us": 45.2,
+        "max_us": 192.5
+      },
+      "sparse_coord": {
+        "median_us": 6147.15,
+        "p95_us": 7511.49,
+        "mean_us": 6346.163500000001,
+        "std_us": 557.676284252567,
+        "min_us": 5972.8,
+        "max_us": 10603.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1580.1,
+        "p95_us": 2000.6249999999995,
+        "mean_us": 1651.0230000000001,
+        "std_us": 190.20248413467158,
+        "min_us": 1553.4,
+        "max_us": 2882.6
+      },
+      "speedup_csc_vs_coord": 3.8903550408202014,
+      "speedup_cached_vs_dense": 1.4264069264069263,
+      "relative_to_dense_blass": 23.977238239757206,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0441,
+        "sparse_coord": 0.1549,
+        "sparse_csc": 1.2527
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 184.1,
+        "p95_us": 308.775,
+        "mean_us": 211.4495,
+        "std_us": 51.346158568582325,
+        "min_us": 166.9,
+        "max_us": 478.4
+      },
+      "dense_cached": {
+        "median_us": 212.4,
+        "p95_us": 281.53499999999997,
+        "mean_us": 229.28349999999998,
+        "std_us": 78.12543553638596,
+        "min_us": 177.7,
+        "max_us": 1194.1
+      },
+      "sparse_coord": {
+        "median_us": 7385.15,
+        "p95_us": 11052.074999999999,
+        "mean_us": 8027.641499999999,
+        "std_us": 1682.8518118146203,
+        "min_us": 6748.8,
+        "max_us": 18633.5
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 2019.35,
+        "p95_us": 2966.8249999999985,
+        "mean_us": 2201.7785,
+        "std_us": 376.89946071565294,
+        "min_us": 1983.5,
+        "max_us": 4060.6
+      },
+      "speedup_csc_vs_coord": 3.65719167058707,
+      "speedup_cached_vs_dense": 0.8667608286252354,
+      "relative_to_dense_blass": 10.968766974470396,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0441,
+        "sparse_coord": 0.1549,
+        "sparse_csc": 1.2527
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 46.7,
+        "p95_us": 47.3,
+        "mean_us": 47.355999999999995,
+        "std_us": 6.122120874337584,
+        "min_us": 46.0,
+        "max_us": 130.2
+      },
+      "dense_cached": {
+        "median_us": 27.5,
+        "p95_us": 106.38999999999997,
+        "mean_us": 39.887,
+        "std_us": 36.3308743495116,
+        "min_us": 27.2,
+        "max_us": 314.7
+      },
+      "sparse_coord": {
+        "median_us": 3145.8500000000004,
+        "p95_us": 4165.664999999999,
+        "mean_us": 3296.5285,
+        "std_us": 336.14592000759137,
+        "min_us": 3089.3,
+        "max_us": 4811.1
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1420.0,
+        "p95_us": 2112.3899999999994,
+        "mean_us": 1553.3304999999998,
+        "std_us": 256.10748216276306,
+        "min_us": 1395.9,
+        "max_us": 2797.2
+      },
+      "speedup_csc_vs_coord": 2.2153873239436623,
+      "speedup_cached_vs_dense": 1.6981818181818182,
+      "relative_to_dense_blass": 30.406852248394003,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0318,
+        "sparse_coord": 0.0999,
+        "sparse_csc": 2.0332
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 66.1,
+        "p95_us": 71.05499999999988,
+        "mean_us": 67.0305,
+        "std_us": 3.7012186844335475,
+        "min_us": 65.4,
+        "max_us": 93.5
+      },
+      "dense_cached": {
+        "median_us": 46.1,
+        "p95_us": 57.64499999999999,
+        "mean_us": 47.5035,
+        "std_us": 5.8246233998431185,
+        "min_us": 45.3,
+        "max_us": 93.7
+      },
+      "sparse_coord": {
+        "median_us": 2483.25,
+        "p95_us": 3705.965,
+        "mean_us": 2719.9570000000003,
+        "std_us": 464.5955606234308,
+        "min_us": 2425.2,
+        "max_us": 4709.4
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1498.1,
+        "p95_us": 1751.2049999999997,
+        "mean_us": 1542.4025,
+        "std_us": 142.17229984687594,
+        "min_us": 1474.8,
+        "max_us": 2519.3
+      },
+      "speedup_csc_vs_coord": 1.657599626193178,
+      "speedup_cached_vs_dense": 1.4338394793926246,
+      "relative_to_dense_blass": 22.664145234493194,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0318,
+        "sparse_coord": 0.0999,
+        "sparse_csc": 2.0332
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 241.55,
+        "p95_us": 322.36999999999995,
+        "mean_us": 253.5085,
+        "std_us": 41.65456730960003,
+        "min_us": 177.0,
+        "max_us": 456.0
+      },
+      "dense_cached": {
+        "median_us": 212.8,
+        "p95_us": 278.22499999999997,
+        "mean_us": 224.9775,
+        "std_us": 36.63659296045417,
+        "min_us": 146.9,
+        "max_us": 399.4
+      },
+      "sparse_coord": {
+        "median_us": 2820.6499999999996,
+        "p95_us": 4683.459999999998,
+        "mean_us": 3222.772,
+        "std_us": 778.8492169964608,
+        "min_us": 2737.0,
+        "max_us": 8702.4
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1842.8000000000002,
+        "p95_us": 3257.69,
+        "mean_us": 2131.3735,
+        "std_us": 550.4661838367094,
+        "min_us": 1714.9,
+        "max_us": 4278.6
+      },
+      "speedup_csc_vs_coord": 1.530632732797916,
+      "speedup_cached_vs_dense": 1.1351033834586466,
+      "relative_to_dense_blass": 7.629062305940799,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0318,
+        "sparse_coord": 0.0999,
+        "sparse_csc": 2.0332
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 46.45,
+        "p95_us": 67.9,
+        "mean_us": 50.4895,
+        "std_us": 18.43083665355428,
+        "min_us": 45.7,
+        "max_us": 228.3
+      },
+      "dense_cached": {
+        "median_us": 27.7,
+        "p95_us": 27.9,
+        "mean_us": 27.8635,
+        "std_us": 1.448384531124245,
+        "min_us": 27.4,
+        "max_us": 42.3
+      },
+      "sparse_coord": {
+        "median_us": 1584.4,
+        "p95_us": 1727.35,
+        "mean_us": 1605.6690000000003,
+        "std_us": 62.55637328841882,
+        "min_us": 1558.8,
+        "max_us": 2034.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1330.9,
+        "p95_us": 1577.6649999999995,
+        "mean_us": 1364.3564999999999,
+        "std_us": 113.20569357479332,
+        "min_us": 1311.0,
+        "max_us": 2183.4
+      },
+      "speedup_csc_vs_coord": 1.190472612517845,
+      "speedup_cached_vs_dense": 1.6768953068592058,
+      "relative_to_dense_blass": 28.652314316469322,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0326,
+        "sparse_coord": 0.0915,
+        "sparse_csc": 1.2289
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 65.4,
+        "p95_us": 77.425,
+        "mean_us": 66.971,
+        "std_us": 6.207169967062285,
+        "min_us": 64.6,
+        "max_us": 119.0
+      },
+      "dense_cached": {
+        "median_us": 46.0,
+        "p95_us": 55.929999999999986,
+        "mean_us": 47.04600000000001,
+        "std_us": 4.478602907157543,
+        "min_us": 45.5,
+        "max_us": 90.9
+      },
+      "sparse_coord": {
+        "median_us": 1265.45,
+        "p95_us": 1684.4099999999996,
+        "mean_us": 1346.6685,
+        "std_us": 307.8848102095165,
+        "min_us": 1238.6,
+        "max_us": 4743.4
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1393.2,
+        "p95_us": 1688.81,
+        "mean_us": 1447.3805000000002,
+        "std_us": 124.46362267646721,
+        "min_us": 1371.1,
+        "max_us": 2223.3
+      },
+      "speedup_csc_vs_coord": 0.9083046224519092,
+      "speedup_cached_vs_dense": 1.4217391304347828,
+      "relative_to_dense_blass": 21.30275229357798,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0326,
+        "sparse_coord": 0.0915,
+        "sparse_csc": 1.2289
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 217.6,
+        "p95_us": 305.7049999999996,
+        "mean_us": 231.726,
+        "std_us": 67.15253996685456,
+        "min_us": 172.6,
+        "max_us": 628.3
+      },
+      "dense_cached": {
+        "median_us": 231.0,
+        "p95_us": 329.8499999999998,
+        "mean_us": 242.21,
+        "std_us": 63.455918557688534,
+        "min_us": 168.7,
+        "max_us": 614.5
+      },
+      "sparse_coord": {
+        "median_us": 1425.05,
+        "p95_us": 1932.794999999999,
+        "mean_us": 1502.3135,
+        "std_us": 201.4458745364372,
+        "min_us": 1398.9,
+        "max_us": 2559.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1573.25,
+        "p95_us": 1817.05,
+        "mean_us": 1621.7479999999998,
+        "std_us": 125.6755513057333,
+        "min_us": 1547.2,
+        "max_us": 2580.4
+      },
+      "speedup_csc_vs_coord": 0.905800095344033,
+      "speedup_cached_vs_dense": 0.9419913419913419,
+      "relative_to_dense_blass": 7.230009191176471,
+      "footprints": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "conversion_times_ms": {
+        "dense_cached": 0.0326,
+        "sparse_coord": 0.0915,
+        "sparse_csc": 1.2289
+      }
+    }
+  ]
+}
