@@ -1,0 +1,502 @@
+{
+  "metadata": {
+    "sparsities": [
+      0.0,
+      0.5,
+      0.75,
+      0.9,
+      0.95
+    ],
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "epochs": 100,
+    "hidden_sizes": [
+      64,
+      64
+    ],
+    "python_version": "3.14.2",
+    "numpy_version": "2.5.2",
+    "matplotlib_version": "3.11.2",
+    "platform": "Windows-11-10.0.26300-SP0"
+  },
+  "raw_runs": [
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.0,
+      "seed": 42,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.02556733209619601,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.01203716175654488
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.0,
+      "seed": 43,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9666666666666667,
+      "test_loss": 0.05741247789646575,
+      "train_accuracy": 0.9979166666666667,
+      "train_loss": 0.00825542060951707
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.0,
+      "seed": 44,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.0046641366415980925,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.016725192401703014
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.5,
+      "seed": 42,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.01353697935031394,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.012703599823806772
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.5,
+      "seed": 43,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 0.975,
+      "test_loss": 0.05222922113781425,
+      "train_accuracy": 0.9979166666666667,
+      "train_loss": 0.007005049364402753
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.5,
+      "seed": 44,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.0035565833895709045,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.015913449568256566
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.75,
+      "seed": 42,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.06606539175025652,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.011687152499197695
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.75,
+      "seed": 43,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9583333333333334,
+      "test_loss": 0.06804086667208924,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.012949302910461183
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.75,
+      "seed": 44,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.003517202770145958,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.01578054952424699
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.9,
+      "seed": 42,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.04079374085554353,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.0123550886771395
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.9,
+      "seed": 43,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9666666666666667,
+      "test_loss": 0.051700345333830486,
+      "train_accuracy": 0.9979166666666667,
+      "train_loss": 0.007826655018345036
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.9,
+      "seed": 44,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.003217376371582454,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.013244335570711864
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.95,
+      "seed": 42,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.03434516924634809,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.013137982191967053
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.95,
+      "seed": 43,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 0.975,
+      "test_loss": 0.05470100584057989,
+      "train_accuracy": 0.9979166666666667,
+      "train_loss": 0.008908009769192012
+    },
+    {
+      "method": "magnitude",
+      "target_sparsity": 0.95,
+      "seed": 44,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.005255801534798962,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.014704437406506794
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.0,
+      "seed": 42,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.02556733209619601,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.01203716175654488
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.0,
+      "seed": 43,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9666666666666667,
+      "test_loss": 0.05741247789646575,
+      "train_accuracy": 0.9979166666666667,
+      "train_loss": 0.00825542060951707
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.0,
+      "seed": 44,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.0046641366415980925,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.016725192401703014
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.5,
+      "seed": 42,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.04587492768908966,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.012257537872239266
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.5,
+      "seed": 43,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 0.975,
+      "test_loss": 0.057986741783918556,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.012005529182036593
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.5,
+      "seed": 44,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.01167656016433553,
+      "train_accuracy": 0.98125,
+      "train_loss": 0.038420754397842496
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.75,
+      "seed": 42,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.00964046902918741,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.016455964478481747
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.75,
+      "seed": 43,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 0.975,
+      "test_loss": 0.048043777333644976,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.009057772966514293
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.75,
+      "seed": 44,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.005978865529683226,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.018062126580411973
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.9,
+      "seed": 42,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.03797717689363482,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.012828826576334018
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.9,
+      "seed": 43,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9666666666666667,
+      "test_loss": 0.06456594628437047,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.011874207112781754
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.9,
+      "seed": 44,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.005473576639635751,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.017377327857579918
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.95,
+      "seed": 42,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9833333333333333,
+      "test_loss": 0.028659722362837627,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.014324300778391056
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.95,
+      "seed": 43,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 0.9666666666666667,
+      "test_loss": 0.0719906321282362,
+      "train_accuracy": 0.99375,
+      "train_loss": 0.014812964270227155
+    },
+    {
+      "method": "saliency",
+      "target_sparsity": 0.95,
+      "seed": 44,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "test_accuracy": 1.0,
+      "test_loss": 0.008236941461482229,
+      "train_accuracy": 0.9958333333333333,
+      "train_loss": 0.0190026023478548
+    }
+  ],
+  "summary": {
+    "magnitude": {
+      "0.00": {
+        "target_sparsity": 0.0,
+        "achieved_sparsity_mean": 0.0,
+        "active_connections_mean": 4416.0,
+        "test_accuracy_mean": 0.9861111111111112,
+        "test_accuracy_std": 0.014163943093313291,
+        "test_loss_mean": 0.029214648878086617,
+        "test_loss_std": 0.021688308156940058,
+        "num_seeds": 3
+      },
+      "0.50": {
+        "target_sparsity": 0.5,
+        "achieved_sparsity_mean": 0.5,
+        "active_connections_mean": 2208.0,
+        "test_accuracy_mean": 0.9888888888888889,
+        "test_accuracy_std": 0.010393492741038738,
+        "test_loss_mean": 0.0231075946258997,
+        "test_loss_std": 0.020991330335924995,
+        "num_seeds": 3
+      },
+      "0.75": {
+        "target_sparsity": 0.75,
+        "achieved_sparsity_mean": 0.75,
+        "active_connections_mean": 1104.0,
+        "test_accuracy_mean": 0.9833333333333334,
+        "test_accuracy_std": 0.018002057495577376,
+        "test_loss_mean": 0.045874487064163895,
+        "test_loss_std": 0.02996197896073057,
+        "num_seeds": 3
+      },
+      "0.90": {
+        "target_sparsity": 0.9,
+        "achieved_sparsity_mean": 0.8999094202898551,
+        "active_connections_mean": 442.0,
+        "test_accuracy_mean": 0.9861111111111112,
+        "test_accuracy_std": 0.014163943093313291,
+        "test_loss_mean": 0.031903820853652155,
+        "test_loss_std": 0.02076732334026379,
+        "num_seeds": 3
+      },
+      "0.95": {
+        "target_sparsity": 0.95,
+        "achieved_sparsity_mean": 0.9499547101449274,
+        "active_connections_mean": 221.0,
+        "test_accuracy_mean": 0.9888888888888889,
+        "test_accuracy_std": 0.010393492741038738,
+        "test_loss_mean": 0.03143399220724231,
+        "test_loss_std": 0.02029060983188803,
+        "num_seeds": 3
+      }
+    },
+    "saliency": {
+      "0.00": {
+        "target_sparsity": 0.0,
+        "achieved_sparsity_mean": 0.0,
+        "active_connections_mean": 4416.0,
+        "test_accuracy_mean": 0.9861111111111112,
+        "test_accuracy_std": 0.014163943093313291,
+        "test_loss_mean": 0.029214648878086617,
+        "test_loss_std": 0.021688308156940058,
+        "num_seeds": 3
+      },
+      "0.50": {
+        "target_sparsity": 0.5,
+        "achieved_sparsity_mean": 0.5,
+        "active_connections_mean": 2208.0,
+        "test_accuracy_mean": 0.9861111111111112,
+        "test_accuracy_std": 0.007856742013183886,
+        "test_loss_mean": 0.038512743212447915,
+        "test_loss_std": 0.019609683842611535,
+        "num_seeds": 3
+      },
+      "0.75": {
+        "target_sparsity": 0.75,
+        "achieved_sparsity_mean": 0.75,
+        "active_connections_mean": 1104.0,
+        "test_accuracy_mean": 0.9916666666666667,
+        "test_accuracy_std": 0.011785113019775804,
+        "test_loss_mean": 0.021221037297505203,
+        "test_loss_std": 0.019025358031351157,
+        "num_seeds": 3
+      },
+      "0.90": {
+        "target_sparsity": 0.9,
+        "achieved_sparsity_mean": 0.8999094202898551,
+        "active_connections_mean": 442.0,
+        "test_accuracy_mean": 0.9861111111111112,
+        "test_accuracy_std": 0.014163943093313291,
+        "test_loss_mean": 0.03600556660588035,
+        "test_loss_std": 0.02416460873402224,
+        "num_seeds": 3
+      },
+      "0.95": {
+        "target_sparsity": 0.95,
+        "achieved_sparsity_mean": 0.9499547101449274,
+        "active_connections_mean": 221.0,
+        "test_accuracy_mean": 0.9833333333333334,
+        "test_accuracy_std": 0.01360827634879543,
+        "test_loss_mean": 0.03629576531751868,
+        "test_loss_std": 0.026581511524771485,
+        "num_seeds": 3
+      }
+    }
+  },
+  "cost_benchmark": {
+    "dense_macs_per_sample": 4416,
+    "sparse_macs_per_sample": 442,
+    "macs_reduction_fraction": 0.8999094202898551,
+    "dense_wall_time_ms": 0.40629133332307293,
+    "sparse_wall_time_ms": 1.229339666654899,
+    "slowdown_factor": 3.025759020257905
+  },
+  "falsifiable_claim": "Quantitative Claim: At 90% connection sparsity (442 active out of 4,416 weights), both pruning methods maintain test accuracy > 90% (magnitude: 98.6%, saliency: 98.6%), far exceeding 33.3% random chance. However, unoptimized sparse Python forward paths exhibit a 3.0x latency slowdown despite a 90.0% reduction in theoretical MACs."
+}
