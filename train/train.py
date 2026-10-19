@@ -105,6 +105,7 @@ def train_model(
     test_fraction: float = 0.2,
     prune_start_fraction: float = 0.1,
     prune_end_fraction: float = 0.6,
+    snapshot_path: Path | None = None,
 ) -> dict:
     """Train an MLP on spirals (in either dense baseline or gradual prune mode).
 
@@ -119,6 +120,8 @@ def train_model(
 
     Returns:
         Dict with keys ``config``, ``history``, ``initial``, and ``final`` metrics.
+        If ``snapshot_path`` is supplied, the final model and this result are
+        exported after training; no training or optimizer calculations change.
     """
     if mode not in ("baseline", "prune"):
         raise ValueError(f"mode must be 'baseline' or 'prune', got '{mode}'.")
@@ -171,7 +174,7 @@ def train_model(
 
     final_train_loss, final_train_acc = evaluate(model, train_x, train_y)
     achieved_sparsity, active_conn, total_prunable = model.sparsity()
-    return {
+    result = {
         "config": {
             "mode": mode, "method": method if mode == "prune" else None,
             "target_sparsity": sparsity if mode == "prune" else 0.0,
@@ -198,6 +201,10 @@ def train_model(
             "total_prunable": total_prunable,
         },
     }
+    if snapshot_path is not None:
+        from train.snapshot import save_snapshot
+        save_snapshot(model, result, snapshot_path)
+    return result
 
 
 def train_baseline(epochs: int = 100, seed: int = 42, **kwargs) -> dict:
@@ -231,6 +238,8 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--output", type=Path, default=None,
                         help="Optional JSON file for the full result (e.g. results/run.json).")
+    parser.add_argument("--snapshot", type=Path, default=None,
+                        help="Optional inference snapshot of final weights, masks and metrics.")
     return parser.parse_args(argv)
 
 
@@ -246,6 +255,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         hidden_sizes=args.hidden,
         learning_rate=args.lr,
         batch_size=args.batch_size,
+        snapshot_path=args.snapshot,
     )
     config, history = result["config"], result["history"]
     initial, final = result["initial"], result["final"]

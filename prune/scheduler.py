@@ -34,8 +34,8 @@ def target_sparsity_at_step(
       .. math::
           s(t) = s_f \\cdot \\left(1 - \\left(1 - \\frac{t - t_0}{t_1 - t_0}\\right)^3\\right)
 
-    This cubic curve starts gently, accelerates pruning in the middle, and
-    decelerates as it approaches the final target.
+    After warm-up, this cubic curve increases sparsity fastest at the start
+    of the ramp and decelerates as it approaches the final target.
 
     Args:
         step: Current step or epoch index (1-based or 0-based, must match start/end).

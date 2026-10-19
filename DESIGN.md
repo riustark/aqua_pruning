@@ -82,7 +82,7 @@ $$\Delta W_{T+1, ij} = -\eta \frac{\hat{m}_{T+1, ij}}{\sqrt{\hat{v}_{T+1, ij}} +
 The pruned weight immediately **reactivates** to a non-zero value, corrupting the sparsity budget.
 
 ### 3.2 The Solution & Mathematical Proof of Non-Revival
-Whenever `apply_mask(new_mask)` or `prune_to_sparsity(...)` executes:
+`apply_mask(new_mask)` zeros raw weights and gradients. The training pruning coordinator `prune_to_sparsity(...)` also calls `optimizer.reset_pruned_state()` to clear and register optimizer masks:
 1. Raw weight values are zeroed: $W_{\text{raw}, ij} = 0$ where $M_{ij} = 0$.
 2. Optimizer states are cleared via `optimizer.reset_pruned_state()`:
    $$m_{ij} \leftarrow 0, \quad v_{ij} \leftarrow 0 \quad \forall (i, j) \text{ where } M_{ij} = 0$$
@@ -96,7 +96,7 @@ For all subsequent steps $t > T$:
 5. Update: $\Delta W_{t, ij} = -\eta \frac{0}{\sqrt{0} + \epsilon} = 0$.
 6. $W_{t, ij} = W_{t-1, ij} - 0 = 0$.
 
-Thus, $W_{ij}$ is mathematically trapped at $0.0$. Accidental reactivation is impossible.
+Thus, through the supported pruning/training APIs, the masked raw weight remains exactly zero. Directly mutating public arrays or bypassing the layer API is outside this guarantee.
 
 ---
 
@@ -124,11 +124,11 @@ $$S_{ij} = |\Delta L_{ij}| \approx |g_{ij} \cdot W_{ij}|$$
 ## 5. Cubic Sparsity Schedule & Budget Enforcement
 
 ### 5.1 Polynomial Ramp vs. One-Shot Pruning
-Pruning a network in a single step (one-shot) inflicts catastrophic damage on internal feature representations. We employ an established polynomial schedule (Zhu & Gupta, 2017):
+Pruning a network in a single step can disrupt learned representations; gradual pruning gives the surviving weights time to adapt. We employ an established polynomial schedule (Zhu & Gupta, 2017):
 $$s(t) = s_f \left(1 - \left(1 - \frac{t - t_{\text{start}}}{t_{\text{end}} - t_{\text{start}}}\right)^3\right)$$
 
 * **Warm-Up Phase ($t < t_{\text{start}}$):** Dense baseline training establishes stable coordinate frames.
-* **Cubic Ramp ($t_{\text{start}} \le t \le t_{\text{end}}$):** Pruning starts gently, accelerates in the middle, and decelerates near the target.
+* **Cubic Ramp ($t_{\text{start}} \le t \le t_{\text{end}}$):** The rate of increase in target sparsity is highest at the start of the ramp and decreases toward zero near the target.
 * **Fine-Tuning Phase ($t > t_{\text{end}}$):** The mask is frozen, allowing remaining connections to re-converge.
 
 ### 5.2 Exact Integer Budget Formulation
@@ -143,18 +143,34 @@ $$s(t) = s_f \left(1 - \left(1 - \frac{t - t_{\text{start}}}{t_{\text{end}} - t_
 ### 6.1 The BLAS vs. Sparse Matrix Paradox
 Our benchmark revealed a critical systems finding:
 * **Theoretical MAC reduction:** 90.0% reduction (4,416 $\to$ 442 operations).
-* **Empirical Wall-Clock Latency:** 3.0x **slowdown** (0.41ms $\to$ 1.23ms).
+* **Empirical wall-clock latency:** See `results/verified/EVIDENCE.md` for measurements on the actual trained snapshot and its recorded environment. Earlier timing numbers used proxy models and are historical only. The sparse path is not assumed to outperform dense BLAS.
 
 ```
 Dense Matrix Multiplication (BLAS):
 [  Contiguous Memory Access  ] -> [ SIMD Registers (AVX2/AVX-512) ] -> High Throughput
 
-Unstructured Sparse Forward (Coordinate / CSR):
+Unstructured Sparse Forward (Coordinate / Column-grouped):
 [ Scattered Index Lookups   ] -> [ Cache Misses / Branching       ] -> Memory Stall
 ```
 
-### 6.2 Industrial Deployment Recommendations
-To translate theoretical connection pruning into wall-clock inference speedups in production:
-1. **2:4 Semi-Structured Sparsity:** Modern hardware (NVIDIA Ampere/Hopper Tensor Cores) accelerates 2:4 sparsity (exactly 2 values out of every 4 are zero) with specialized hardware instructions, providing genuine 2x speedups.
-2. **Block / Channel Pruning:** Pruning entire columns or hidden units allows removing rows/columns from the dense weight matrices entirely, reducing matrix dimensions while remaining inside fast BLAS routines.
-3. **Sparse-Trained Compilers:** Deployment via TVM, TensorRT, or ONNX Runtime with vendor-optimized sparse GEMM kernels.
+### 6.2 Multi-Tenant Serving Design
+The current repository is an offline experiment, not an implemented serving service. For a shared service, I would publish immutable, versioned model artifacts with architecture, masks, accuracy evidence and a content hash. Each request would select an authorized tenant/model version; queues, concurrency limits and memory quotas would prevent one tenant from exhausting shared resources. Model caches and request buffers must be keyed by tenant/version, with access controls preventing cross-tenant data exposure.
+
+Batch only compatible requests for the same model version and enforce a maximum queue delay. Choose the inference backend from measured latency for the actual model and batch size: our sparse Python implementations lose to dense NumPy here, so pruning alone does not justify routing to a sparse backend. Track queue time, end-to-end p95 latency, throughput, errors and memory under concurrent load; isolated forward timings do not establish service capacity. Load and validate a new immutable version separately, then switch routing atomically with rollback to the prior version. Keep training and optimizer state out of inference workers. This is a design proposal, not a claim that these service features have been built.
+
+## 7. Initialization and Training Stability
+The default ReLU MLP uses independent zero-mean normal weights with variance `2 / fan_in` (He initialization). Under the approximate assumptions of independent centered inputs and weights, ReLU removes about half the second moment; this scale compensates for that loss across hidden layers. The implementation applies the same choice to the final linear logits layer for consistency; the ReLU variance argument directly concerns hidden layers, not a claim of an optimal output-layer scale. For the optional tanh activation, Xavier variance `2 / (fan_in + fan_out)` balances forward/backward scales and reduces the risk of early saturation. These are approximations, not stability proofs.
+
+Zero biases avoid an initial offset; independent random weights break symmetry. Training uses float64, stable log-sum-exp cross-entropy, finite-value guards and the recorded Adam learning rate of 0.01. The saved 100-epoch histories and `results/verified/learning_curves.png` demonstrate finite training on the recorded runs. They do not guarantee stability for arbitrary learning rates or datasets. Training loss is the mean of mini-batch losses observed during epoch updates, while held-out loss and both accuracies are measured after the epoch's pruning step. They are therefore not exactly synchronized estimates of the same model state.
+
+## 8. Autodiff Bottleneck and Optimization Plan
+The engine rebuilds a Python graph for every batch, allocates Tensor/gradient arrays, traverses the graph topologically and calls Python backward functions. For this small MLP, that interpreter/allocation overhead is a likely bottleneck alongside dense matrix multiplication; no profiler attribution is claimed. At larger widths, dense matrix multiplication and activation/gradient storage grow substantially. Zero-filled masks leave these dense operations in place.
+
+I would first profile graph construction, topological traversal, backward operations and NumPy matrix multiplication separately on representative batches. Then I would consider reusing buffers with explicit graph-lifetime ownership, reducing redundant array copies, and fusing common operations, preserving the existing finite-difference and shared-parent accumulation tests. A static execution plan could reuse topology for fixed shapes, but must invalidate cached structure when shape or topology changes. Inference can omit gradient graphs entirely, as the measured NumPy inference backends already do. These are future optimization options, not changes made to training for this submission.
+
+## 9. Pruned-Then-Revived State Policy
+Production training uses permanent pruning: `Linear.apply_mask` rejects any false-to-true mask transition before modifying state. `tests/test_revival_policy.py` demonstrates a rejected revival after Adam has accumulated moments, verifies identical weights, gradients, masks, predictions, moments and step count, then checks another 25 training updates keep the pruned coordinate zero.
+
+The lower-level Adam mask API can re-enable a coordinate independently of a layer. A separate test genuinely prunes a Tensor coordinate, clears its weight and moments, performs masked updates, re-enables it, and checks the next update against the analytic Adam equation for small and ordinary gradients. Its policy is **zero moments with the existing global optimizer clock**. Old momentum cannot leak back, and surviving-coordinate history is preserved. However, bias correction uses the global step, so this is not equivalent to a fresh coordinate-local Adam optimizer and can produce a larger first update. The test documents that behavior; it does not claim a bound on revived-coordinate step size or demonstrate MLP regrowth.
+
+If optional model regrowth were added, its design would need an explicit weight initialization and coordinate-age/bias-correction policy plus synchronization of layer and optimizer masks. Resetting the whole optimizer would also change surviving weights' trajectories. Neither change is made here, preserving the established training behavior. Run `python -m pytest tests/test_revival_policy.py -v` for the edge-case demonstration.

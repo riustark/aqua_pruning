@@ -1,0 +1,4 @@
+# Reference experiment environment: Python 3.14.2
+numpy==2.5.2
+matplotlib==3.11.2
+pytest==9.1.1

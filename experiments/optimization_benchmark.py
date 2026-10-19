@@ -4,7 +4,7 @@ Compares all 4 inference backends across batch sizes [1, 16, 128] and
 sparsities [0.0, 0.50, 0.75, 0.90, 0.95] with warm-up, repeated measurements,
 median/p95 latency, conversion costs, and memory footprints.
 
-Outputs are written exclusively to results/optimization/.
+Outputs default to results/verified/optimization/; the CLI can override this.
 """
 
 from __future__ import annotations
@@ -21,10 +21,9 @@ from typing import Sequence
 import numpy as np
 
 from experiments.optimized_inference import OptimizedInferenceEngine
-from nn.layers import MLP
-from nn.optimizers import Adam
-from prune.importance import compute_layer_scores
-from prune.scheduler import prune_to_sparsity
+from experiments.benchmark import measure_forward_costs
+from train.snapshot import load_snapshot, snapshot_test_data
+from train.train import evaluate
 
 BATCH_SIZES = (1, 16, 128)
 SPARSITY_LEVELS = (0.0, 0.50, 0.75, 0.90, 0.95)
@@ -68,23 +67,29 @@ def run_cpu_benchmark(
     seed: int = 42,
     warmup_reps: int = DEFAULT_WARMUP_REPS,
     benchmark_reps: int = DEFAULT_BENCHMARK_REPS,
+    benchmark_results: Path = Path("results/verified/benchmark_results.json"),
+    method: str = "saliency",
 ) -> dict:
-    """Run full matrix of batch sizes, sparsities, and backends."""
+    """Time trained snapshots already measured by the accuracy sweep."""
     results: list[dict] = []
-    rng = np.random.default_rng(seed)
+    benchmark_results = Path(benchmark_results)
+    sweep = json.loads(benchmark_results.read_text(encoding="utf-8"))
 
     print(f"Running CPU inference benchmark across sparsities {list(sparsities)} and batches {list(batch_sizes)}...")
 
     for sparsity in sparsities:
-        # Build model and prune to target
-        model = MLP([2, 64, 64, 3], np.random.default_rng(seed))
-        if sparsity > 0.0:
-            scores = compute_layer_scores(model, "magnitude")
-            prune_to_sparsity(model, Adam(model.parameters()), scores, sparsity)
-
-        # Build optimized inference engine (measures conversion time)
-        engine = OptimizedInferenceEngine(model)
-        footprints = engine.memory_footprints()
+        artifact = next((a for a in sweep["model_artifacts"] if a["method"] == method
+                         and a["target_sparsity"] == sparsity and a["seed"] == seed), None)
+        if artifact is None:
+            raise ValueError(f"No trained artifact for {method}, sparsity={sparsity}, seed={seed}.")
+        model, metadata = load_snapshot(benchmark_results.parent / artifact["path"])
+        if metadata["model_sha256"] != artifact["model_sha256"]:
+            raise ValueError("Sweep and snapshot model fingerprints differ.")
+        test_x, test_y = snapshot_test_data(metadata["result"])
+        test_loss, test_accuracy = evaluate(model, test_x, test_y)
+        final = metadata["result"]["final"]
+        if test_loss != final["test_loss"] or test_accuracy != final["test_accuracy"]:
+            raise AssertionError("Loaded model no longer reproduces recorded test metrics.")
         achieved_sparsity, active_conn, total_prunable = model.sparsity()
 
         # Theoretical MACs per sample
@@ -92,23 +97,13 @@ def run_cpu_benchmark(
         sparse_macs = active_conn
 
         for batch_size in batch_sizes:
-            inputs = rng.normal(size=(batch_size, 2))
-
-            # Verify equivalence before timing
-            ref = engine.predict_logits(inputs, "dense")
-            d_cached = engine.predict_logits(inputs, "dense_cached")
-            s_coord = engine.predict_logits(inputs, "sparse_coord")
-            s_csc = engine.predict_logits(inputs, "sparse_csc_vectorized")
-
-            np.testing.assert_allclose(ref, d_cached, rtol=1e-10, atol=1e-10)
-            np.testing.assert_allclose(ref, s_coord, rtol=1e-10, atol=1e-10)
-            np.testing.assert_allclose(ref, s_csc, rtol=1e-10, atol=1e-10)
-
-            # Measure latency for each backend
-            t_dense = measure_backend_latency(engine, "dense", inputs, warmup_reps, benchmark_reps)
-            t_cached = measure_backend_latency(engine, "dense_cached", inputs, warmup_reps, benchmark_reps)
-            t_coord = measure_backend_latency(engine, "sparse_coord", inputs, warmup_reps, benchmark_reps)
-            t_csc = measure_backend_latency(engine, "sparse_csc_vectorized", inputs, warmup_reps, benchmark_reps)
+            if batch_size <= 0:
+                raise ValueError("Batch sizes must be positive.")
+            inputs = np.tile(test_x, ((batch_size + len(test_x) - 1) // len(test_x), 1))[:batch_size]
+            cost = measure_forward_costs(model, inputs=inputs, iterations=benchmark_reps,
+                                         warmup_reps=warmup_reps)
+            t_dense, t_cached, t_coord, t_csc = (cost["timings"][name] for name in
+                ("dense", "dense_cached", "sparse_coord", "sparse_csc_vectorized"))
 
             results.append({
                 "sparsity": float(sparsity),
@@ -122,15 +117,17 @@ def run_cpu_benchmark(
                 "dense_cached": t_cached,
                 "sparse_coord": t_coord,
                 "sparse_csc_vectorized": t_csc,
+                "source_model": artifact,
+                "model_sha256": cost["model_sha256"],
+                "test_accuracy": test_accuracy, "test_loss": test_loss,
+                "max_abs_logit_error": cost["max_abs_logit_error"],
+                "class_predictions_match": cost["class_predictions_match"],
                 "speedup_csc_vs_coord": float(t_coord["median_us"] / max(t_csc["median_us"], 1e-6)),
                 "speedup_cached_vs_dense": float(t_dense["median_us"] / max(t_cached["median_us"], 1e-6)),
-                "relative_to_dense_blass": float(t_csc["median_us"] / max(t_dense["median_us"], 1e-6)),
-                "footprints": footprints,
-                "conversion_times_ms": {
-                    "dense_cached": engine.cached_build_time_ms,
-                    "sparse_coord": engine.coord_build_time_ms,
-                    "sparse_csc": engine.csc_build_time_ms,
-                },
+                "relative_to_dense_blas": float(t_csc["median_us"] / max(t_dense["median_us"], 1e-6)),
+                "array_payload_bytes": cost["array_payload_bytes"],
+                "memory_scope": cost["memory_scope"],
+                "conversion_times_ms": cost["conversion_times_ms"],
             })
 
     return {
@@ -142,6 +139,10 @@ def run_cpu_benchmark(
             "warmup_reps": warmup_reps,
             "benchmark_reps": benchmark_reps,
             "seed": seed,
+            "method": method,
+            "benchmark_results": benchmark_results.as_posix(),
+            "input_source": "held-out split, repeated deterministically when batch exceeds test size",
+            "timing_order": "rotating backends per repetition",
             "omp_num_threads": os.environ.get("OMP_NUM_THREADS", "default"),
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         },
@@ -151,7 +152,10 @@ def run_cpu_benchmark(
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="CPU inference latency benchmark.")
-    parser.add_argument("--output-dir", type=Path, default=Path("results/optimization"))
+    parser.add_argument("--output-dir", type=Path, default=Path("results/verified/optimization"))
+    parser.add_argument("--benchmark-results", type=Path, default=Path("results/verified/benchmark_results.json"))
+    parser.add_argument("--method", choices=("magnitude", "saliency"), default="saliency")
+    parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--warmup", type=int, default=DEFAULT_WARMUP_REPS)
     parser.add_argument("--reps", type=int, default=DEFAULT_BENCHMARK_REPS)
     args = parser.parse_args(argv)
@@ -159,7 +163,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     output_dir: Path = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    data = run_cpu_benchmark(warmup_reps=args.warmup, benchmark_reps=args.reps)
+    data = run_cpu_benchmark(warmup_reps=args.warmup, benchmark_reps=args.reps,
+                             benchmark_results=args.benchmark_results, method=args.method, seed=args.seed)
 
     json_path = output_dir / "inference_benchmark_results.json"
     json_path.write_text(json.dumps(data, indent=2), encoding="utf-8")

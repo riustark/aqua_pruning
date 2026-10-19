@@ -1,0 +1,42 @@
+{
+  "executable_ast_sha256": {
+    "engine\\operations.py": "4585d97d08741d60100e8d3f65616f28188eb99f75af00f12bac9671dcd53335",
+    "engine\\tensor.py": "dc253a0ec9a7b9d5e32ea51807bece9b7d922a93e887a1703c5b2dcfa97570e5",
+    "nn\\layers.py": "51a8378699f7b7022bd058f115a97e25ea853b1376e1b3e6375ca357cd8b526a",
+    "nn\\optimizers.py": "2c83d546462f51dc5d3bd34cb89cac52421e1a89684be8a24d08d935e938c846",
+    "prune\\importance.py": "27300a3abe577505d6e725b0b4d23fbd4f83c3145d258e41a23ec36a503f2541",
+    "prune\\scheduler.py": "2b1675642cf4123dc94e1ffa356adbff8cca46de3bff5370afff1a71b434fbf8",
+    "train\\dataset.py": "476b3216d2854649f8643402880f5e3cd93704fb946b7b066dfe7254970614cb",
+    "train\\snapshot.py": "ba17b2bf5840c1b1a9e2235ce28c83e06b13c4fba7418175d1af46b702d85c2d",
+    "train\\train.py": "0ba51c8f588b053ddcbadefc00800c1a2dab1c888b1dadfb939f382fe0239052"
+  },
+  "snapshot_sha256": {
+    "results\\verified\\models\\baseline_s0p0_seed42.npz": "58ab19a8c0302e7ab458b69c085fcc5916d2cc736a57daa806204295a1077b92",
+    "results\\verified\\models\\baseline_s0p0_seed43.npz": "ae63475997cebc81e5acd1a3f13edae470a1f1ea4a05428c8fca49556102be97",
+    "results\\verified\\models\\baseline_s0p0_seed44.npz": "5a91dc2d854ae1cdc66f0d47261f8f583f90352d800a6620579246382de6ef81",
+    "results\\verified\\models\\magnitude_s0p5_seed42.npz": "d945debdeaccb2a448db53efacd3efb111f24afa42180f763fe5d03b17f7b98d",
+    "results\\verified\\models\\magnitude_s0p5_seed43.npz": "1c453ee568e19843bb5ee7f46fce59d974bf87b12dbbb7b0316e26807b529f7d",
+    "results\\verified\\models\\magnitude_s0p5_seed44.npz": "e9318831dd202c75a486b723f3a031cad9e0ce023bca742a4c960327b4f62c1d",
+    "results\\verified\\models\\magnitude_s0p75_seed42.npz": "9b23ef97530b6488dabb6aab56d27cfa634b2bdb040d78a3cb40890fa9358dad",
+    "results\\verified\\models\\magnitude_s0p75_seed43.npz": "dd099c6ef40bcfcb6183f9a1c683692030eef62adc1ca572b90c67f3611dd7c3",
+    "results\\verified\\models\\magnitude_s0p75_seed44.npz": "d549cd6dbd4e32237a8cd7351e79250c74b3933971d9e4500a87a3e82709bbae",
+    "results\\verified\\models\\magnitude_s0p95_seed42.npz": "4280eb78501c2f03b1f89a836d8aa046e490823e2cd229fa57713a27cc284f63",
+    "results\\verified\\models\\magnitude_s0p95_seed43.npz": "93135463d4e9a9fed653721c3a25a0137950e21840a20d076e4308d91d81fa5c",
+    "results\\verified\\models\\magnitude_s0p95_seed44.npz": "a3bba7195dbb1bf5a077a7a09d4a3083faab86b2c7d5ac639bc9f14008f4bd84",
+    "results\\verified\\models\\magnitude_s0p9_seed42.npz": "e478915231f42ab91605a28b6833496816492ac2c95e9c9c581983beca2bd2c1",
+    "results\\verified\\models\\magnitude_s0p9_seed43.npz": "f09df5b8e6ca71390bebd84e5f0e44583e57d24cf8328535588ce0f308572b99",
+    "results\\verified\\models\\magnitude_s0p9_seed44.npz": "b099da7f6b4a9bbd169a98e2c1bd3626e9bacea8cd0476fe282a5f2f7a915fcc",
+    "results\\verified\\models\\saliency_s0p5_seed42.npz": "f9c8288366f9b40360e7acb7e6c200ef4ebda56e70400546a2c81181709b4972",
+    "results\\verified\\models\\saliency_s0p5_seed43.npz": "114895b243442cb6c55dbf74cae2efce3597fa1e59053cd53b622a8446452568",
+    "results\\verified\\models\\saliency_s0p5_seed44.npz": "6a76cd2f126937898dfee1fd1bcda7b84115444be2bdcad74f572a056536b423",
+    "results\\verified\\models\\saliency_s0p75_seed42.npz": "3a32608d8d7ae377393d4e573f1eead6b7ab5d2b2897a37fd6643bb153ce489a",
+    "results\\verified\\models\\saliency_s0p75_seed43.npz": "8b7a2c482d80edae455afbd5ef6f4d77394e16cfe0a4cd0ae170dda18f80c97b",
+    "results\\verified\\models\\saliency_s0p75_seed44.npz": "98412de5cfd163acbfc4544c0e1c3257e653cec3daa8308cdca7865299101b3d",
+    "results\\verified\\models\\saliency_s0p95_seed42.npz": "45b5c439c5c3e73ee7a2d52ac6afa3b1065ec560e0fad2919ba424474faa8b42",
+    "results\\verified\\models\\saliency_s0p95_seed43.npz": "e8e5b045b5eff0c55acfb0d45ddb74cab25cef1dd6e91d23f6e59fb7f4c67bd7",
+    "results\\verified\\models\\saliency_s0p95_seed44.npz": "0144cadf2db9170284b63ea07889b474b055ef15e9f144d4c81c756ad5174ef2",
+    "results\\verified\\models\\saliency_s0p9_seed42.npz": "48e4b2da9618d5e7af090c96e3877547b31835fcbe53570cd935ddda0dd8a498",
+    "results\\verified\\models\\saliency_s0p9_seed43.npz": "414e08d0d55f006a12f7710e24037f70d6e814f13ac12d2eb555368d16f3cb76",
+    "results\\verified\\models\\saliency_s0p9_seed44.npz": "11a67fa78f41863b80d70543cb64cf0182dab47be7006f7bf20f1b42c1fd1c56"
+  }
+}

@@ -1,0 +1,979 @@
+{
+  "metadata": {
+    "platform": "Windows-11-10.0.26300-SP0",
+    "processor": "AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD",
+    "python_version": "3.14.2",
+    "numpy_version": "2.5.2",
+    "warmup_reps": 50,
+    "benchmark_reps": 200,
+    "seed": 42,
+    "method": "saliency",
+    "benchmark_results": "results/verified/benchmark_results.json",
+    "input_source": "held-out split, repeated deterministically when batch exceeds test size",
+    "timing_order": "rotating backends per repetition",
+    "omp_num_threads": "default",
+    "timestamp": "2026-10-19T07:49:23Z"
+  },
+  "results": [
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 80.65,
+        "p95_us": 126.13999999999989,
+        "min_us": 53.8,
+        "max_us": 189.9
+      },
+      "dense_cached": {
+        "median_us": 34.9,
+        "p95_us": 64.26999999999998,
+        "min_us": 29.3,
+        "max_us": 357.7
+      },
+      "sparse_coord": {
+        "median_us": 33778.7,
+        "p95_us": 40753.464999999975,
+        "min_us": 31246.6,
+        "max_us": 56210.0
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1580.35,
+        "p95_us": 2296.9399999999996,
+        "min_us": 1485.4,
+        "max_us": 4422.9
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.0,
+        "seed": 42,
+        "path": "models/baseline_s0p0_seed42.npz",
+        "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32"
+      },
+      "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.02556733209619601,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 8.881784197001252e-16,
+        "sparse_csc_vectorized": 3.552713678800501e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 21.37418926187237,
+      "speedup_cached_vs_dense": 2.3108882521489975,
+      "relative_to_dense_blas": 19.595164290142588,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0403,
+        "sparse_coord": 0.1675,
+        "sparse_csc_vectorized": 1.307
+      }
+    },
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 110.45,
+        "p95_us": 178.05999999999997,
+        "min_us": 72.2,
+        "max_us": 298.4
+      },
+      "dense_cached": {
+        "median_us": 54.4,
+        "p95_us": 96.41,
+        "min_us": 47.8,
+        "max_us": 373.5
+      },
+      "sparse_coord": {
+        "median_us": 25641.6,
+        "p95_us": 30134.42999999999,
+        "min_us": 23867.9,
+        "max_us": 39461.5
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1854.9,
+        "p95_us": 2902.615,
+        "min_us": 1747.9,
+        "max_us": 3272.3
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.0,
+        "seed": 42,
+        "path": "models/baseline_s0p0_seed42.npz",
+        "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32"
+      },
+      "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.02556733209619601,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.4210854715202004e-14,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 13.823710173055149,
+      "speedup_cached_vs_dense": 2.030330882352941,
+      "relative_to_dense_blas": 16.79402444545043,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0593,
+        "sparse_coord": 0.1541,
+        "sparse_csc_vectorized": 1.3596
+      }
+    },
+    {
+      "sparsity": 0.0,
+      "achieved_sparsity": 0.0,
+      "active_connections": 4416,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 4416,
+      "dense": {
+        "median_us": 364.85,
+        "p95_us": 452.74499999999995,
+        "min_us": 222.2,
+        "max_us": 561.6
+      },
+      "dense_cached": {
+        "median_us": 293.65,
+        "p95_us": 367.33999999999975,
+        "min_us": 180.8,
+        "max_us": 533.7
+      },
+      "sparse_coord": {
+        "median_us": 29195.45,
+        "p95_us": 32279.014999999996,
+        "min_us": 27231.5,
+        "max_us": 35517.8
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 3274.55,
+        "p95_us": 4219.375,
+        "min_us": 3127.5,
+        "max_us": 5257.3
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.0,
+        "seed": 42,
+        "path": "models/baseline_s0p0_seed42.npz",
+        "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32"
+      },
+      "model_sha256": "dd485fb32474db9ac3f9910d6d748521fa4bb358ac1c01071cf2781f0de3be32",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.02556733209619601,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.4210854715202004e-14,
+        "sparse_csc_vectorized": 1.4210854715202004e-14
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 8.915866302240001,
+      "speedup_cached_vs_dense": 1.2424655201770818,
+      "relative_to_dense_blas": 8.975058243113608,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 54040,
+        "sparse_coord_bytes": 71704
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.067,
+        "sparse_coord": 0.2047,
+        "sparse_csc_vectorized": 1.4738
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 74.94999999999999,
+        "p95_us": 136.02999999999994,
+        "min_us": 53.3,
+        "max_us": 241.3
+      },
+      "dense_cached": {
+        "median_us": 34.4,
+        "p95_us": 62.70499999999996,
+        "min_us": 29.6,
+        "max_us": 129.8
+      },
+      "sparse_coord": {
+        "median_us": 16970.5,
+        "p95_us": 19647.129999999997,
+        "min_us": 15644.9,
+        "max_us": 21606.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1545.0500000000002,
+        "p95_us": 2284.0399999999995,
+        "min_us": 1440.3,
+        "max_us": 2949.6
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.5,
+        "seed": 42,
+        "path": "models/saliency_s0p5_seed42.npz",
+        "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de"
+      },
+      "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.04587492768908966,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 8.881784197001252e-16,
+        "sparse_csc_vectorized": 1.7763568394002505e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 10.983786932461731,
+      "speedup_cached_vs_dense": 2.1787790697674416,
+      "relative_to_dense_blas": 20.614409606404276,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0313,
+        "sparse_coord": 0.1747,
+        "sparse_csc_vectorized": 1.3395
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 104.4,
+        "p95_us": 182.32,
+        "min_us": 74.2,
+        "max_us": 222.5
+      },
+      "dense_cached": {
+        "median_us": 55.5,
+        "p95_us": 107.02499999999999,
+        "min_us": 48.4,
+        "max_us": 272.0
+      },
+      "sparse_coord": {
+        "median_us": 13209.099999999999,
+        "p95_us": 14758.025,
+        "min_us": 12073.2,
+        "max_us": 16322.4
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1704.6,
+        "p95_us": 2631.019999999999,
+        "min_us": 1576.2,
+        "max_us": 3217.5
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.5,
+        "seed": 42,
+        "path": "models/saliency_s0p5_seed42.npz",
+        "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de"
+      },
+      "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.04587492768908966,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.4210854715202004e-14,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 7.7490906957644015,
+      "speedup_cached_vs_dense": 1.8810810810810812,
+      "relative_to_dense_blas": 16.32758620689655,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0433,
+        "sparse_coord": 0.154,
+        "sparse_csc_vectorized": 1.3412
+      }
+    },
+    {
+      "sparsity": 0.5,
+      "achieved_sparsity": 0.5,
+      "active_connections": 2208,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 2208,
+      "dense": {
+        "median_us": 360.1,
+        "p95_us": 488.44999999999993,
+        "min_us": 220.2,
+        "max_us": 634.7
+      },
+      "dense_cached": {
+        "median_us": 288.15,
+        "p95_us": 382.9,
+        "min_us": 176.6,
+        "max_us": 676.7
+      },
+      "sparse_coord": {
+        "median_us": 14797.6,
+        "p95_us": 16832.604999999992,
+        "min_us": 13454.8,
+        "max_us": 20209.0
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 2480.45,
+        "p95_us": 3406.8199999999993,
+        "min_us": 2298.1,
+        "max_us": 5429.8
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.5,
+        "seed": 42,
+        "path": "models/saliency_s0p5_seed42.npz",
+        "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de"
+      },
+      "model_sha256": "f60b08ee60656dc6abb06fbff6854d22321ee91f17c4ea3421d3701f0811a1de",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.04587492768908966,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.7763568394002505e-14,
+        "sparse_csc_vectorized": 2.1316282072803006e-14
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 5.965691709165676,
+      "speedup_cached_vs_dense": 1.2496963387124764,
+      "relative_to_dense_blas": 6.888225492918632,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 27544,
+        "sparse_coord_bytes": 36376
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0498,
+        "sparse_coord": 0.156,
+        "sparse_csc_vectorized": 1.432
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 80.4,
+        "p95_us": 138.64999999999995,
+        "min_us": 52.5,
+        "max_us": 284.1
+      },
+      "dense_cached": {
+        "median_us": 34.650000000000006,
+        "p95_us": 66.50999999999999,
+        "min_us": 29.3,
+        "max_us": 241.7
+      },
+      "sparse_coord": {
+        "median_us": 8324.4,
+        "p95_us": 11827.924999999997,
+        "min_us": 7840.2,
+        "max_us": 18814.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1447.8,
+        "p95_us": 2508.6949999999993,
+        "min_us": 1342.4,
+        "max_us": 8483.4
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.75,
+        "seed": 42,
+        "path": "models/saliency_s0p75_seed42.npz",
+        "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f"
+      },
+      "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f",
+      "test_accuracy": 1.0,
+      "test_loss": 0.00964046902918741,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.3322676295501878e-15,
+        "sparse_csc_vectorized": 1.7763568394002505e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 5.7496891835888935,
+      "speedup_cached_vs_dense": 2.32034632034632,
+      "relative_to_dense_blas": 18.007462686567163,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0298,
+        "sparse_coord": 0.1346,
+        "sparse_csc_vectorized": 1.2892
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 100.45,
+        "p95_us": 157.79499999999996,
+        "min_us": 73.1,
+        "max_us": 331.1
+      },
+      "dense_cached": {
+        "median_us": 54.5,
+        "p95_us": 95.44499999999995,
+        "min_us": 47.5,
+        "max_us": 226.1
+      },
+      "sparse_coord": {
+        "median_us": 6392.15,
+        "p95_us": 8590.279999999999,
+        "min_us": 6031.9,
+        "max_us": 11180.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1535.95,
+        "p95_us": 2223.229999999999,
+        "min_us": 1420.8,
+        "max_us": 2836.2
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.75,
+        "seed": 42,
+        "path": "models/saliency_s0p75_seed42.npz",
+        "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f"
+      },
+      "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f",
+      "test_accuracy": 1.0,
+      "test_loss": 0.00964046902918741,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.0658141036401503e-14,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 4.161691461310589,
+      "speedup_cached_vs_dense": 1.843119266055046,
+      "relative_to_dense_blas": 15.290691886510702,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0388,
+        "sparse_coord": 0.1204,
+        "sparse_csc_vectorized": 1.2921
+      }
+    },
+    {
+      "sparsity": 0.75,
+      "achieved_sparsity": 0.75,
+      "active_connections": 1104,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 1104,
+      "dense": {
+        "median_us": 348.95,
+        "p95_us": 446.9849999999997,
+        "min_us": 224.6,
+        "max_us": 733.3
+      },
+      "dense_cached": {
+        "median_us": 285.55,
+        "p95_us": 367.32999999999964,
+        "min_us": 175.9,
+        "max_us": 520.9
+      },
+      "sparse_coord": {
+        "median_us": 7265.65,
+        "p95_us": 8805.274999999998,
+        "min_us": 6811.8,
+        "max_us": 10501.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1971.4499999999998,
+        "p95_us": 2770.1849999999986,
+        "min_us": 1865.4,
+        "max_us": 3641.7
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.75,
+        "seed": 42,
+        "path": "models/saliency_s0p75_seed42.npz",
+        "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f"
+      },
+      "model_sha256": "7126ee9ae75dba38495ffbe7629711f3ac33d74be4653e0562d899413627407f",
+      "test_accuracy": 1.0,
+      "test_loss": 0.00964046902918741,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 2.1316282072803006e-14,
+        "sparse_csc_vectorized": 2.842170943040401e-14
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 3.685434578609653,
+      "speedup_cached_vs_dense": 1.222027665907897,
+      "relative_to_dense_blas": 5.649663275540908,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 14296,
+        "sparse_coord_bytes": 18712
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0488,
+        "sparse_coord": 0.1285,
+        "sparse_csc_vectorized": 1.4956
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 61.55,
+        "p95_us": 99.28999999999998,
+        "min_us": 52.1,
+        "max_us": 399.1
+      },
+      "dense_cached": {
+        "median_us": 32.8,
+        "p95_us": 48.14499999999999,
+        "min_us": 29.4,
+        "max_us": 185.4
+      },
+      "sparse_coord": {
+        "median_us": 3230.8999999999996,
+        "p95_us": 4073.379999999999,
+        "min_us": 3167.1,
+        "max_us": 4920.2
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1145.8000000000002,
+        "p95_us": 1501.7999999999995,
+        "min_us": 1104.0,
+        "max_us": 1888.8
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.9,
+        "seed": 42,
+        "path": "models/saliency_s0p9_seed42.npz",
+        "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75"
+      },
+      "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.03797717689363482,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 8.881784197001252e-16,
+        "sparse_csc_vectorized": 0.0
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 2.8197765753185537,
+      "speedup_cached_vs_dense": 1.8765243902439026,
+      "relative_to_dense_blas": 18.6157595450853,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0302,
+        "sparse_coord": 0.0901,
+        "sparse_csc_vectorized": 1.2823
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 88.6,
+        "p95_us": 156.68999999999983,
+        "min_us": 71.7,
+        "max_us": 338.3
+      },
+      "dense_cached": {
+        "median_us": 53.0,
+        "p95_us": 89.19999999999993,
+        "min_us": 47.6,
+        "max_us": 250.6
+      },
+      "sparse_coord": {
+        "median_us": 2600.65,
+        "p95_us": 3648.625,
+        "min_us": 2484.3,
+        "max_us": 4888.8
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1220.05,
+        "p95_us": 1891.5149999999992,
+        "min_us": 1145.7,
+        "max_us": 3810.2
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.9,
+        "seed": 42,
+        "path": "models/saliency_s0p9_seed42.npz",
+        "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75"
+      },
+      "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.03797717689363482,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 7.105427357601002e-15,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 2.131592967501332,
+      "speedup_cached_vs_dense": 1.671698113207547,
+      "relative_to_dense_blas": 13.770316027088036,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0415,
+        "sparse_coord": 0.099,
+        "sparse_csc_vectorized": 1.2518
+      }
+    },
+    {
+      "sparsity": 0.9,
+      "achieved_sparsity": 0.8999094202898551,
+      "active_connections": 442,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 442,
+      "dense": {
+        "median_us": 330.55,
+        "p95_us": 417.695,
+        "min_us": 209.0,
+        "max_us": 617.0
+      },
+      "dense_cached": {
+        "median_us": 279.95,
+        "p95_us": 358.6399999999999,
+        "min_us": 181.1,
+        "max_us": 479.6
+      },
+      "sparse_coord": {
+        "median_us": 3121.9,
+        "p95_us": 4042.789999999999,
+        "min_us": 2786.7,
+        "max_us": 4613.4
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1457.8,
+        "p95_us": 2070.4049999999997,
+        "min_us": 1391.0,
+        "max_us": 2466.5
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.9,
+        "seed": 42,
+        "path": "models/saliency_s0p9_seed42.npz",
+        "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75"
+      },
+      "model_sha256": "392738f8554ff6d08225c31225e045c5fd3e6f3f949cdb40e3a40074aefeaa75",
+      "test_accuracy": 0.9916666666666667,
+      "test_loss": 0.03797717689363482,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.4210854715202004e-14,
+        "sparse_csc_vectorized": 1.4210854715202004e-14
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 2.1415146110577585,
+      "speedup_cached_vs_dense": 1.180746561886051,
+      "relative_to_dense_blas": 4.410225381939192,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 6352,
+        "sparse_coord_bytes": 8120
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0657,
+        "sparse_coord": 0.1058,
+        "sparse_csc_vectorized": 1.5909
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 1,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 58.05,
+        "p95_us": 108.34999999999998,
+        "min_us": 51.9,
+        "max_us": 215.5
+      },
+      "dense_cached": {
+        "median_us": 32.0,
+        "p95_us": 52.62499999999999,
+        "min_us": 29.4,
+        "max_us": 152.5
+      },
+      "sparse_coord": {
+        "median_us": 1644.65,
+        "p95_us": 2231.9049999999993,
+        "min_us": 1600.7,
+        "max_us": 2904.9
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 830.8499999999999,
+        "p95_us": 1226.705,
+        "min_us": 807.6,
+        "max_us": 1616.8
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.95,
+        "seed": 42,
+        "path": "models/saliency_s0p95_seed42.npz",
+        "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529"
+      },
+      "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529",
+      "test_accuracy": 0.9833333333333333,
+      "test_loss": 0.028659722362837627,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 8.881784197001252e-16,
+        "sparse_csc_vectorized": 1.7763568394002505e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 1.9794788469639528,
+      "speedup_cached_vs_dense": 1.8140625,
+      "relative_to_dense_blas": 14.31266149870801,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.029,
+        "sparse_coord": 0.0828,
+        "sparse_csc_vectorized": 1.3323
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 16,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 86.45,
+        "p95_us": 173.1899999999999,
+        "min_us": 71.9,
+        "max_us": 306.4
+      },
+      "dense_cached": {
+        "median_us": 53.849999999999994,
+        "p95_us": 98.28999999999994,
+        "min_us": 47.6,
+        "max_us": 150.8
+      },
+      "sparse_coord": {
+        "median_us": 1320.35,
+        "p95_us": 2126.6349999999998,
+        "min_us": 1261.3,
+        "max_us": 2580.5
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 877.25,
+        "p95_us": 1638.7199999999998,
+        "min_us": 830.5,
+        "max_us": 2437.4
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.95,
+        "seed": 42,
+        "path": "models/saliency_s0p95_seed42.npz",
+        "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529"
+      },
+      "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529",
+      "test_accuracy": 0.9833333333333333,
+      "test_loss": 0.028659722362837627,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 7.105427357601002e-15,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 1.5051011684240523,
+      "speedup_cached_vs_dense": 1.6053853296193132,
+      "relative_to_dense_blas": 10.147484094852516,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0342,
+        "sparse_coord": 0.0834,
+        "sparse_csc_vectorized": 1.2333
+      }
+    },
+    {
+      "sparsity": 0.95,
+      "achieved_sparsity": 0.9499547101449275,
+      "active_connections": 221,
+      "total_prunable": 4416,
+      "batch_size": 128,
+      "dense_macs_per_sample": 4416,
+      "sparse_macs_per_sample": 221,
+      "dense": {
+        "median_us": 353.0,
+        "p95_us": 529.835,
+        "min_us": 220.8,
+        "max_us": 826.3
+      },
+      "dense_cached": {
+        "median_us": 286.8,
+        "p95_us": 418.47499999999957,
+        "min_us": 167.5,
+        "max_us": 674.9
+      },
+      "sparse_coord": {
+        "median_us": 1643.75,
+        "p95_us": 2345.2349999999997,
+        "min_us": 1438.4,
+        "max_us": 2767.7
+      },
+      "sparse_csc_vectorized": {
+        "median_us": 1079.55,
+        "p95_us": 1758.2749999999999,
+        "min_us": 1006.0,
+        "max_us": 2070.8
+      },
+      "source_model": {
+        "method": "saliency",
+        "target_sparsity": 0.95,
+        "seed": 42,
+        "path": "models/saliency_s0p95_seed42.npz",
+        "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529"
+      },
+      "model_sha256": "b536455706243e60694c5d4c97893bf770962f014bd7e474bfd9bc9c1d448529",
+      "test_accuracy": 0.9833333333333333,
+      "test_loss": 0.028659722362837627,
+      "max_abs_logit_error": {
+        "dense": 0.0,
+        "dense_cached": 0.0,
+        "sparse_coord": 1.4210854715202004e-14,
+        "sparse_csc_vectorized": 7.105427357601002e-15
+      },
+      "class_predictions_match": true,
+      "speedup_csc_vs_coord": 1.52262516789403,
+      "speedup_cached_vs_dense": 1.2308228730822872,
+      "relative_to_dense_blas": 3.058215297450425,
+      "array_payload_bytes": {
+        "dense_cached_bytes": 36376,
+        "sparse_csc_bytes": 3700,
+        "sparse_coord_bytes": 4584
+      },
+      "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+      "conversion_times_ms": {
+        "dense_cached": 0.0439,
+        "sparse_coord": 0.0931,
+        "sparse_csc_vectorized": 1.3603
+      }
+    }
+  ]
+}

@@ -16,7 +16,10 @@ This module:
 from __future__ import annotations
 
 import argparse
+import contextlib
+import io
 import json
+import os
 import platform
 import sys
 import time
@@ -29,7 +32,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from nn.layers import MLP
-from train.dataset import make_spirals
 from train.train import train_baseline, train_pruned
 
 DEFAULT_SPARSITIES = (0.0, 0.50, 0.75, 0.90, 0.95)
@@ -89,6 +91,8 @@ def measure_forward_costs(
     batch_size: int = 120,
     iterations: int = 200,
     seed: int = 0,
+    inputs: np.ndarray | None = None,
+    warmup_reps: int = 20,
 ) -> dict:
     """Compare theoretical work (MACs) and wall-clock latency for dense vs sparse execution.
 
@@ -101,45 +105,81 @@ def measure_forward_costs(
     Returns:
         Dict with MAC counts, theoretical reduction, and measured timings.
     """
-    rng = np.random.default_rng(seed)
-    inputs = rng.normal(size=(batch_size, model.layers[0].in_features))
+    from experiments.optimized_inference import OptimizedInferenceEngine
+    from train.snapshot import model_fingerprint
 
-    # 1. Theoretical Multiply-Accumulate (MAC) count
-    dense_macs_per_sample = sum(l.weight.size for l in model.layers)
-    sparse_macs_per_sample = sum(l.num_active() for l in model.layers)
-    macs_reduction = 1.0 - (sparse_macs_per_sample / dense_macs_per_sample)
-
-    # 2. Time dense NumPy BLAS forward pass: inputs @ (weight * mask) + bias
-    # Warmup
-    for _ in range(10):
-        _ = model(inputs)
-
-    start_dense = time.perf_counter()
-    for _ in range(iterations):
-        _ = model(inputs)
-    dense_time_ms = (time.perf_counter() - start_dense) * 1000.0 / iterations
-
-    # 3. Time sparse-aware forward path
-    sparse_layers = [
-        SparseLinearRepresentation(l.weight.data, l.mask, l.bias.data)
-        for l in model.layers
-    ]
-    # Warmup
-    for _ in range(10):
-        _ = sparse_aware_forward(sparse_layers, inputs, model.activation)
-
-    start_sparse = time.perf_counter()
-    for _ in range(iterations):
-        _ = sparse_aware_forward(sparse_layers, inputs, model.activation)
-    sparse_time_ms = (time.perf_counter() - start_sparse) * 1000.0 / iterations
-
+    if iterations <= 0 or warmup_reps < 0 or batch_size <= 0:
+        raise ValueError("Need positive iterations/batch size and nonnegative warmup.")
+    if inputs is None:
+        inputs = np.random.default_rng(seed).normal(
+            size=(batch_size, model.layers[0].in_features))
+    inputs = np.asarray(inputs, dtype=np.float64)
+    if inputs.ndim != 2 or inputs.shape[0] == 0 or inputs.shape[1] != model.layer_sizes[0]:
+        raise ValueError("Inputs must be a nonempty batch matching model input size.")
+    before = model_fingerprint(model)
+    engine = OptimizedInferenceEngine(model)
+    backends = ("dense", "dense_cached", "sparse_coord", "sparse_csc_vectorized")
+    # Compare every inference path against the actual training forward function.
+    reference = model(inputs).data
+    errors = {}
+    for backend in backends:
+        logits = engine.predict_logits(inputs, backend)
+        np.testing.assert_allclose(logits, reference, rtol=1e-10, atol=1e-10)
+        if not np.array_equal(logits.argmax(axis=1), reference.argmax(axis=1)):
+            raise AssertionError(f"Class predictions differ for {backend}.")
+        errors[backend] = float(np.max(np.abs(logits - reference)))
+    for _ in range(warmup_reps):
+        for backend in backends:
+            engine.predict_logits(inputs, backend)
+    durations = {backend: [] for backend in backends}
+    # Rotate backend order to distribute timing drift across implementations.
+    for repeat in range(iterations):
+        offset = repeat % len(backends)
+        for backend in backends[offset:] + backends[:offset]:
+            start = time.perf_counter_ns()
+            engine.predict_logits(inputs, backend)
+            durations[backend].append((time.perf_counter_ns() - start) / 1000.0)
+    stats = {backend: {
+        "median_us": float(np.median(values)),
+        "p95_us": float(np.percentile(values, 95)),
+        "min_us": float(np.min(values)), "max_us": float(np.max(values)),
+    } for backend, values in durations.items()}
+    if before != model_fingerprint(model):
+        raise AssertionError("Inference benchmark changed model weights or masks.")
+    dense_macs_per_sample = sum(layer.weight.size for layer in model.layers)
+    sparse_macs_per_sample = sum(layer.num_active() for layer in model.layers)
+    dense_ms = stats["dense"]["median_us"] / 1000.0
+    sparse_ms = stats["sparse_coord"]["median_us"] / 1000.0
+    blas_config = io.StringIO()
+    with contextlib.redirect_stdout(blas_config):
+        np.show_config()
     return {
         "dense_macs_per_sample": int(dense_macs_per_sample),
         "sparse_macs_per_sample": int(sparse_macs_per_sample),
-        "macs_reduction_fraction": float(macs_reduction),
-        "dense_wall_time_ms": float(dense_time_ms),
-        "sparse_wall_time_ms": float(sparse_time_ms),
-        "slowdown_factor": float(sparse_time_ms / max(dense_time_ms, 1e-9)),
+        "macs_reduction_fraction": float(1.0 - sparse_macs_per_sample / dense_macs_per_sample),
+        "dense_wall_time_ms": dense_ms,
+        "sparse_wall_time_ms": sparse_ms,
+        "slowdown_factor": float(sparse_ms / max(dense_ms, 1e-9)),
+        "model_sha256": before,
+        "batch_size": int(inputs.shape[0]), "warmup_reps": warmup_reps,
+        "benchmark_reps": iterations, "latency_statistic": "median",
+        "timing_order": "rotating backends per repetition",
+        "timings": stats, "max_abs_logit_error": errors,
+        "class_predictions_match": True,
+        "array_payload_bytes": engine.memory_footprints(),
+        "memory_scope": "NumPy array payload per representation; excludes Python overhead and total engine memory",
+        "conversion_times_ms": {
+            "dense_cached": engine.cached_build_time_ms,
+            "sparse_coord": engine.coord_build_time_ms,
+            "sparse_csc_vectorized": engine.csc_build_time_ms,
+        },
+        "environment": {
+            "platform": platform.platform(), "processor": platform.processor(),
+            "python": platform.python_version(), "numpy": np.__version__,
+            "thread_settings": {name: os.environ.get(name, "default") for name in
+                                ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS")},
+            "numpy_build_config": blas_config.getvalue(),
+        },
     }
 
 
@@ -152,6 +192,7 @@ def run_benchmark_sweep(
     epochs: int = 100,
     hidden_sizes: Sequence[int] = (64, 64),
     learning_rate: float = 0.01,
+    artifact_dir: Path | None = None,
 ) -> dict:
     """Execute the multi-sparsity experiment across methods and seeds.
 
@@ -163,10 +204,18 @@ def run_benchmark_sweep(
 
     # Cache baseline runs at sparsity 0.0 so we do not repeat identical dense training
     baseline_cache: dict[int, dict] = {}
+    artifacts: list[dict] = []
+    def snapshot_path(method: str, target: float, seed: int) -> Path | None:
+        if artifact_dir is None:
+            return None
+        name = f"{method}_s{str(float(target)).replace('.', 'p')}_seed{seed}.npz"
+        return artifact_dir / name
+
     for seed in seeds:
         print(f"  Training dense baseline (seed {seed})...")
         baseline_cache[seed] = train_baseline(
-            epochs=epochs, seed=seed, hidden_sizes=hidden_sizes, learning_rate=learning_rate
+            epochs=epochs, seed=seed, hidden_sizes=hidden_sizes, learning_rate=learning_rate,
+            snapshot_path=snapshot_path("baseline", 0.0, seed),
         )
 
     for method in ("magnitude", "saliency"):
@@ -184,6 +233,7 @@ def run_benchmark_sweep(
                         seed=seed,
                         hidden_sizes=hidden_sizes,
                         learning_rate=learning_rate,
+                        snapshot_path=snapshot_path(method, target_sparsity, seed),
                     )
 
                 final = run_result["final"]
@@ -199,6 +249,16 @@ def run_benchmark_sweep(
                     "train_accuracy": float(final["train_accuracy"]),
                     "train_loss": float(final["train_loss"]),
                 })
+                if artifact_dir is not None:
+                    from train.snapshot import load_snapshot
+                    path = snapshot_path("baseline" if target_sparsity == 0 else method,
+                                         target_sparsity, seed)
+                    _, metadata = load_snapshot(path)
+                    artifacts.append({
+                        "method": method, "target_sparsity": float(target_sparsity),
+                        "seed": int(seed), "path": path.relative_to(artifact_dir.parent).as_posix(),
+                        "model_sha256": metadata["model_sha256"],
+                    })
 
     # Aggregate statistics per (method, target_sparsity)
     summary: dict[str, dict[str, dict]] = {"magnitude": {}, "saliency": {}}
@@ -224,7 +284,7 @@ def run_benchmark_sweep(
                 "num_seeds": len(matching),
             }
 
-    return {
+    result = {
         "metadata": {
             "sparsities": [float(s) for s in sparsities],
             "seeds": [int(s) for s in seeds],
@@ -238,6 +298,9 @@ def run_benchmark_sweep(
         "raw_runs": raw_runs,
         "summary": summary,
     }
+    if artifact_dir is not None:
+        result["model_artifacts"] = artifacts
+    return result
 
 
 # ----------------------------------------------------------------------
@@ -300,13 +363,23 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--hidden", type=int, nargs="+", default=[64, 64], help="Hidden layer sizes.")
     parser.add_argument("--sparsities", type=float, nargs="+", default=list(DEFAULT_SPARSITIES),
                         help="Target sparsities to sweep, e.g. 0.0 0.50 0.75 0.90 0.95")
-    parser.add_argument("--output-dir", type=Path, default=Path("results"),
+    parser.add_argument("--output-dir", type=Path, default=Path("results/verified"),
                         help="Directory to save JSON results and plots.")
+    parser.add_argument("--reference-results", type=Path, default=None,
+                        help="Require exact historical accuracy/loss/count reproduction.")
+    parser.add_argument("--warmup", type=int, default=20)
+    parser.add_argument("--reps", type=int, default=200)
     return parser.parse_args(argv)
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv)
+    if args.seeds < 1 or args.epochs < 1 or args.reps < 1 or args.warmup < 0:
+        raise ValueError("Seeds, epochs, reps must be positive; warmup nonnegative.")
+    if not args.sparsities or any(not 0 <= s < 1 for s in args.sparsities):
+        raise ValueError("Need at least one sparsity, each in [0, 1).")
+    if len({f"{s:.2f}" for s in args.sparsities}) != len(args.sparsities):
+        raise ValueError("Sparsities must have distinct two-decimal summary keys.")
     seed_list = [42 + i for i in range(args.seeds)]
     output_dir: Path = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -317,35 +390,39 @@ def main(argv: Sequence[str] | None = None) -> int:
         seeds=seed_list,
         epochs=args.epochs,
         hidden_sizes=args.hidden,
+        artifact_dir=output_dir / "models",
     )
 
-    # 2. Run sparse cost measurement on a 90% pruned model
-    print("\nMeasuring theoretical work vs. empirical wall-clock cost on a 90% pruned model...")
-    demo_run = train_pruned(
-        method="saliency", sparsity=0.90, epochs=min(args.epochs, 50), seed=42, hidden_sizes=args.hidden
-    )
-    # Rebuild the final model structure for timing
-    layer_sizes = demo_run["config"]["layer_sizes"]
-    model = MLP(layer_sizes, np.random.default_rng(42))
-    # Apply demo final active masks to the model for cost timing
-    scores = [np.random.normal(size=l.mask.shape) for l in model.layers]
-    from nn.optimizers import Adam
-    from prune.scheduler import prune_to_sparsity
-    prune_to_sparsity(model, Adam(model.parameters()), scores, 0.90)
+    if args.reference_results is not None:
+        reference = json.loads(args.reference_results.read_text(encoding="utf-8"))
+        if results["raw_runs"] != reference["raw_runs"] or results["summary"] != reference["summary"]:
+            raise AssertionError("Training results differ from the supplied historical reference.")
+        results["regression_check"] = {"reference": args.reference_results.as_posix(),
+                                      "raw_runs_exact_match": True, "summary_exact_match": True}
 
-    cost_metrics = measure_forward_costs(model, batch_size=120, iterations=300, seed=42)
+    # Measure the exact trained saliency artifact represented in the Pareto rows.
+    from train.snapshot import load_snapshot, snapshot_test_data
+    from train.train import evaluate
+    target = 0.90 if 0.90 in args.sparsities else max(args.sparsities)
+    artifact = next(a for a in results["model_artifacts"] if a["method"] == "saliency"
+                    and a["target_sparsity"] == target and a["seed"] == seed_list[0])
+    model, metadata = load_snapshot(output_dir / artifact["path"])
+    test_x, test_y = snapshot_test_data(metadata["result"])
+    test_loss, test_accuracy = evaluate(model, test_x, test_y)
+    final = metadata["result"]["final"]
+    if test_loss != final["test_loss"] or test_accuracy != final["test_accuracy"]:
+        raise AssertionError("Snapshot test metrics differ from the recorded trained model.")
+    print("\nMeasuring the saved trained model on its held-out inputs...")
+    cost_metrics = measure_forward_costs(model, inputs=test_x, iterations=args.reps,
+                                        warmup_reps=args.warmup)
+    cost_metrics["source_model"] = artifact
+    cost_metrics["test_accuracy"] = test_accuracy
+    cost_metrics["test_loss"] = test_loss
+    cost_metrics["input_source"] = "recorded held-out test split"
     results["cost_benchmark"] = cost_metrics
 
-    # 3. Formulate the falsifiable quantitative claim based on evidence
-    mag_90_acc = results["summary"]["magnitude"]["0.90"]["test_accuracy_mean"]
-    sal_90_acc = results["summary"]["saliency"]["0.90"]["test_accuracy_mean"]
-    claim = (
-        f"Quantitative Claim: At 90% connection sparsity (442 active out of 4,416 weights), "
-        f"both pruning methods maintain test accuracy > 90% (magnitude: {mag_90_acc*100:.1f}%, "
-        f"saliency: {sal_90_acc*100:.1f}%), far exceeding 33.3% random chance. "
-        f"However, unoptimized sparse Python forward paths exhibit a {cost_metrics['slowdown_factor']:.1f}x "
-        f"latency slowdown despite a {cost_metrics['macs_reduction_fraction']*100:.1f}% reduction in theoretical MACs."
-    )
+    # Claims use observed values and the actual custom architecture/budget.
+    claim = build_falsifiable_claim(results, target)
     results["falsifiable_claim"] = claim
     print(f"\n{claim}\n")
 
@@ -356,6 +433,8 @@ def main(argv: Sequence[str] | None = None) -> int:
 
     plot_path = output_dir / "pareto_plot.png"
     generate_pareto_plot(results, plot_path)
+    from experiments.evidence_report import write_report
+    write_report(results, output_dir / "EVIDENCE.md")
 
     # Print summary table
     print("\n============================== BENCHMARK SUMMARY ==============================")
@@ -372,6 +451,26 @@ def main(argv: Sequence[str] | None = None) -> int:
     print("===============================================================================\n")
 
     return 0
+
+
+def build_falsifiable_claim(results: dict, target: float) -> str:
+    """Describe observed means without assuming an accuracy threshold or speedup."""
+    key = f"{target:.2f}"
+    mag = results["summary"]["magnitude"][key]
+    sal = results["summary"]["saliency"][key]
+    cost = results["cost_benchmark"]
+    return (
+        f"At {sal['achieved_sparsity_mean']*100:.4f}% achieved weight sparsity "
+        f"({cost['sparse_macs_per_sample']} active out of {cost['dense_macs_per_sample']} weights), "
+        f"mean test accuracy across {sal['num_seeds']} paired seeds is "
+        f"{mag['test_accuracy_mean']*100:.4f}% for magnitude and "
+        f"{sal['test_accuracy_mean']*100:.4f}% for saliency. "
+        f"For the identified trained saliency snapshot, sparse coordinate inference uses "
+        f"{cost['macs_reduction_fraction']*100:.4f}% fewer weight MACs and its median latency "
+        f"is {cost['slowdown_factor']:.3f} times the dense NumPy inference latency "
+        f"at batch {cost['batch_size']} on the recorded environment. "
+        "This timing ratio is measured on one model, not averaged across seeds."
+    )
 
 
 if __name__ == "__main__":

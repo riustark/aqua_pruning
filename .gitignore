@@ -5,3 +5,25 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .venv/
+
+# Project documentation & prompt instructions
+ANTIGRAVITY_AQUA_SIMPLE_SETUP.md
+AQUA_SAFE_OPTIMIZATION_PLAN.md
+FILE_RESPONSIBILITY_AND_NECESSITY.md
+
+# Optional stress experiment and superseded proxy-model evidence.
+# Keep required results/verified/ plots, JSON, and trained snapshots in Git.
+/experiments/robustness.py
+/results/optimization/
+
+# Local environments, build products, and development caches
+venv/
+env/
+build/
+dist/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/

@@ -159,7 +159,9 @@ class OptimizedInferenceEngine:
         raise ValueError(f"Unknown backend '{backend}'.")
 
     def memory_footprints(self) -> dict[str, int]:
-        """Return memory footprint in bytes for each representation."""
+        """Return NumPy array payload bytes per representation, excluding Python
+        overhead, temporaries, and the total memory of this multi-backend engine.
+        """
         dense_bytes = sum(l.memory_bytes for l in self.dense_cached_layers)
         csc_bytes = sum(l.memory_bytes for l in self.sparse_csc_layers)
         coord_bytes = sum(
