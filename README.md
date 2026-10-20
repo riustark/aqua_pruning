@@ -2,7 +2,7 @@
 
 A complete, self-pruning neural network written entirely from scratch in **Python 3.10+ and NumPy**, without PyTorch, TensorFlow, JAX, or any autograd/ML libraries.
 
-Developed for the Tredence AQUA technical challenge, this codebase demonstrates:
+Developed for the AQUA Platform technical challenge, this codebase demonstrates:
 1. An exact, reverse-topological autodiff computational engine.
 2. Training of an MLP with a custom Adam optimizer on non-linear synthetic spiral classification.
 3. Mathematically principled network self-pruning using **Magnitude** and **First-Order Taylor Saliency** on a cubic schedule.
@@ -20,7 +20,7 @@ Developed for the Tredence AQUA technical challenge, this codebase demonstrates:
 py -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -e .
+python -m pip install -e ".[test]"
 ```
 
 *Note on Python Version:* Developed and verified on Python 3.14.2 (compatible with Python 3.10+).
